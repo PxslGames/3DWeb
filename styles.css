@@ -1,0 +1,244 @@
+/* General Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif; /* Make sure the font is the same */
+    font-weight: 400; /* Regular weight for body text */
+    background-color: #000000;
+    color: #b6f5a0;
+    line-height: 1.6;
+    padding-top: 70px;
+}
+
+a {
+    text-decoration: none;
+    color: #a3f59b; /* Slightly darker green for links */
+}
+
+a:hover {
+    color: #79d979; /* Hover effect for links */
+}
+
+p {
+    font-weight: 400; /* Regular weight for paragraphs */
+    color: #a0f9a5; /* Light green for text */
+}
+
+h1, h2, h3 {
+    font-weight: 600; /* Bold weight for headings */
+    color: #74ff8f; /* Bright green for headings */
+}
+
+/* Navbar Styles */
+nav {
+    background-color: #0f0f0f; /* Slightly off-black navbar */
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;  /* Make the navbar fixed at the top */
+    top: 0;
+    width: 100%;      /* Ensure the navbar spans the entire width */
+    z-index: 1000;    /* High z-index to make sure it stays above other elements */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Add a subtle shadow to separate it from content */
+}
+
+nav .logo h1 {
+    color: #6ae368; /* Logo bright green */
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 1.5rem;
+}
+
+nav ul li a {
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    transition: background-color 0.3s ease;
+}
+
+nav ul li a:hover {
+    background-color: #2e2e2e; /* Dark gray hover effect */
+    border-radius: 5px;
+}
+
+.logo-link {
+    color: inherit;
+}
+
+/* Hero Section */
+.hero {
+    height: 80vh;
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('background-image.jpg') center/cover no-repeat;
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Center all content vertically */
+    text-align: center;
+    position: relative;
+    padding-bottom: 50px;
+}
+
+.hero-content h2 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: #79f79e;
+}
+
+.hero-content p {
+    font-size: 1.25rem;
+    color: #a0f9a5;
+}
+
+/* Hero Section Button */
+.cta-button {
+    margin-top: 8rem; /* Adjust this value to move the button down */
+    padding: 0.75rem 2rem;
+    background-color: #1a6f31; /* Dark green */
+    color: #e0ffe6;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+    display: inline-block; /* Ensure it's inline-block for margin to work properly */
+}
+
+.cta-button:hover {
+    background-color: #29a145; /* Brighter green on hover */
+}
+
+/* Simulations Section */
+.simulations {
+    padding: 3rem 2rem;
+    background-color: #101010; /* Dark background for section */
+}
+
+.simulations h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #88ff9b; /* Bright heading for contrast */
+}
+
+.simulation-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+}
+
+.simulation-item {
+    background-color: #161616;
+    padding: 2rem;
+    border-radius: 10px;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.simulation-item:hover {
+    transform: translateY(-10px);
+}
+
+.simulation-item h3 {
+    color: #a7ffae; /* Bright green for item titles */
+    margin-bottom: 1rem;
+}
+
+.simulation-item a {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    background-color: #2b9c4e; /* Button green */
+    color: #ffffff;
+    border-radius: 5px;
+}
+
+.simulation-item a:hover {
+    background-color: #3ac65f;
+}
+
+/* Simulations Section */
+.back-button {
+    position: absolute; /* Positioning it relative to the viewport */
+    top: 20px; /* Distance from the top */
+    left: 20px; /* Distance from the left */
+    padding: 10px 20px; /* Padding around the button */
+    background-color: #74ff8f; /* Bright green background */
+    color: #000; /* Black text color */
+    border: none; /* No border */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    font-size: 16px; /* Font size */
+    transition: background-color 0.3s; /* Smooth transition for hover effect */
+}
+
+.back-button:hover {
+    background-color: #5edb6b; /* Darker green on hover */
+}
+
+/* About Section */
+.about {
+    padding: 3rem 2rem;
+    text-align: center;
+    background-color: #181818;
+}
+
+.about p {
+    color: #b6f7b0;
+    max-width: 800px;
+    margin: 0 auto;
+    font-size: 1.1rem;
+}
+
+/* Contact Section */
+.contact {
+    padding: 3rem 2rem;
+    text-align: center;
+    background-color: #121212;
+}
+
+.contact p {
+    color: #98e78f;
+}
+
+.contact a {
+    color: #6bf57b;
+    font-weight: bold;
+}
+
+.contact a:hover {
+    color: #88ff9b;
+}
+
+/* Footer */
+footer {
+    background-color: #111; /* Dark background to match the site theme */
+    padding: 20px 0;
+    text-align: center; /* Center-align content */
+    color: #74ff8f; /* Bright green text to match theme */
+    position: relative;
+    bottom: 0;
+    width: 100%; /* Full width */
+}
+
+.footer-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.footer-logo {
+    width: 100px; /* Adjust the size to fit well */
+    height: auto; /* Maintain aspect ratio */
+    margin-bottom: 10px; /* Space between logo and text */
+}
+
+footer p {
+    font-size: 14px; /* Smaller text */
+    margin: 0;
+    color: #74ff8f; /* Bright green text to match the theme */
+}

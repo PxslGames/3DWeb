@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>3DWeb</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="logo.png" type="image/x-icon">
+</head>
+
+<body>
+    <!-- Navbar Section -->
+    <nav>
+        <div class="logo">
+            <!-- Wrap 3DWeb logo in anchor tag to link back to top of the page -->
+            <a href="#" class="logo-link">
+                <h1>3DWeb</h1>
+            </a>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#">Home</a></li>
+            <li><a href="explore.html">Explore</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero/Banner Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h2>Welcome to 3DWeb!</h2>
+            <p>Explore awesome 3D simulations right in your browser.</p>
+            <p><b>[Put the window in full-screen for the best experience.]</b></p>
+            <!-- Adjust the button position with a new class -->
+            <a href="#simulations" class="cta-button move-lower">Start Exploring</a>
+        </div>
+    </section>
+
+    <!-- Featured Simulations Section -->
+    <section id="simulations" class="simulations">
+        <h2>Featured 3D Simulations</h2>
+        <div class="simulation-grid">
+            <div class="simulation-item">
+                <h3>Spinning Object</h3>
+                <p>Experience mesmorisement with our customisable Spinning Object Simulation.</p>
+                <a href="spinningobj.html">Try Now</a>
+            </div>
+            <div class="simulation-item">
+                <h3>Number Visualizer</h3>
+                <p>Type in a number, and see that number represented in cubes [Lag Warning!].</p>
+                <h4>Controls</h4>
+                <p>Hold [LMB] Or [RMB] to look around.</p>
+                <a href="numvisual.html">Try Now</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <h2>About 3DWeb</h2>
+        <p>At 3DWeb, our mission is to bring interactive, real-time physics simulations to everyone. Whether you're a student, educator, or enthusiast, our platform provides you with immersive experiences to explore complex physics concepts in an easy and visual way.</p>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <h2>Contact Us</h2>
+        <p>Have questions or feedback? We'd love to hear from you! Reach out at <a href="mailto:info@3dweb.com">info@3dweb.com</a>.</p>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <img src="logo.png" alt="3DWeb Logo" class="footer-logo">
+        <p>&copy; 2024 3DWeb. All rights reserved.</p>
+    </footer>
+    <script src="scripts.js"></script>
+</body>
+</html>

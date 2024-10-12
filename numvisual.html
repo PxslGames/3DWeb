@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="logo.png" type="image/x-icon">
+    <title>3DWeb - Number Visualizer</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #000;
+        }
+
+        canvas {
+            display: block;
+        }
+
+        .input-container {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: #ffffff;
+            z-index: 1;
+            font-family: Arial, sans-serif;
+        }
+
+        .input-container input {
+            padding: 10px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            outline: none;
+            margin-right: 10px; /* Add some space to the right of the number input */
+        }
+
+        .input-container button {
+            padding: 10px 15px;
+            background-color: #74ff8f;
+            color: #000;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .input-container button:hover {
+            background-color: #5edb6b;
+        }
+
+        .back-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 10px 15px;
+            background-color: #74ff8f;
+            color: #000;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+            z-index: 1; /* Ensure it stays on top */
+        }
+
+        .back-button:hover {
+            background-color: #5edb6b;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="input-container">
+        <input type="number" id="cubeCountInput" min="1" placeholder="Enter number of cubes" aria-label="Enter number of cubes">
+        <button id="spawnButton">Spawn Cubes</button>
+    </div>
+
+    <button class="back-button" onclick="window.location.href='explore.html'">Back</button>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        // Scene setup
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        // Lighting setup
+        const ambientLight = new THREE.AmbientLight(0x404040); // Soft white light
+        scene.add(ambientLight);
+
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8); // Bright white light
+        directionalLight.position.set(5, 10, 7.5);
+        scene.add(directionalLight);
+
+        // Camera position
+        camera.position.set(0, 5, 10);
+
+        // Variables for mouse control
+        let isMouseDown = false;
+        let previousMousePosition = { x: 0, y: 0 };
+
+        // Create a single geometry to be reused
+        const geometry = new THREE.BoxGeometry(0.5, 0.5, 0.5);
+
+        // Define a static color for the cubes (in hex format)
+        const cubeColor = 0x00ff00; // Example: Green color
+
+        // Function to spawn cubes in a grid layout
+        function spawnCubes(count) {
+            // Remove existing cubes
+            const existingCubes = scene.children.filter(child => child instanceof THREE.Mesh);
+            existingCubes.forEach(cube => scene.remove(cube));
+
+            const gridSize = Math.ceil(Math.sqrt(count)); // Calculate grid size
+            const spacing = 1.5; // Space between cubes
+
+            for (let i = 0; i < count; i++) {
+                const material = new THREE.MeshStandardMaterial({ color: cubeColor }); // Use the static color
+                const cube = new THREE.Mesh(geometry, material);
+
+                // Position cubes in a grid layout
+                const x = (i % gridSize) * spacing - (gridSize - 1) * spacing / 2;
+                const z = Math.floor(i / gridSize) * spacing - (gridSize - 1) * spacing / 2;
+                cube.position.set(x, 0, z);
+                scene.add(cube);
+            }
+        }
+
+        // Mouse control for looking around
+        function onMouseDown(event) {
+            isMouseDown = true;
+            previousMousePosition = { x: event.clientX, y: event.clientY };
+        }
+
+        function onMouseMove(event) {
+            if (!isMouseDown) return;
+
+            const deltaMove = {
+                x: event.clientX - previousMousePosition.x,
+                y: event.clientY - previousMousePosition.y
+            };
+
+            camera.rotation.y -= deltaMove.x * 0.005; // Adjust the sensitivity as needed
+
+            previousMousePosition = { x: event.clientX, y: event.clientY };
+        }
+
+        function onMouseUp(event) {
+            isMouseDown = false;
+        }
+
+        // Spawn button event listener
+        document.getElementById('spawnButton').addEventListener('click', () => {
+            const count = parseInt(document.getElementById('cubeCountInput').value);
+            if (!isNaN(count) && count > 0) {
+                spawnCubes(count);
+            }
+        });
+
+        // Event listeners for mouse control
+        window.addEventListener('mousedown', onMouseDown);
+        window.addEventListener('mousemove', onMouseMove);
+        window.addEventListener('mouseup', onMouseUp);
+
+        // Handle window resizing
+        window.addEventListener('resize', () => {
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            renderer.setSize(width, height);
+            camera.aspect = width / height;
+            camera.updateProjectionMatrix();
+        });
+
+        // Animation loop
+        function animate() {
+            requestAnimationFrame(animate);
+            renderer.render(scene, camera);
+        }
+
+        animate(); // Start animation
+    </script>
+</body>
+
+</html>

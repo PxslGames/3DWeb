@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3DWeb - Spinning Object</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Link to your existing CSS -->
+    <link rel="icon" href="logo.png" type="image/x-icon">
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #000;
+        }
+
+        canvas {
+            display: block;
+        }
+
+        .back-button,
+        .change-object-button {
+            position: absolute;
+            padding: 10px 20px;
+            background-color: #74ff8f;
+            color: #000;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .back-button {
+            top: 20px;
+            left: 20px;
+        }
+
+        .back-button:hover,
+        .change-object-button:hover {
+            background-color: #5edb6b;
+        }
+
+        .slider-container {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            color: #74ff8f;
+            font-family: Arial, sans-serif;
+        }
+
+        .slider-container label {
+            margin-right: 10px;
+            font-size: 16px;
+        }
+
+        .slider {
+            position: relative;
+            width: 200px;
+            height: 10px;
+            background: linear-gradient(to right, #74ff8f, #5edb6b);
+            border-radius: 10px;
+            outline: none;
+            cursor: pointer;
+            -webkit-appearance: none;
+            appearance: none;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            transition: background 0.3s ease;
+        }
+
+        .slider:hover {
+            background: linear-gradient(to right, #5edb6b, #74ff8f);
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #74ff8f;
+            border-radius: 50%;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .slider::-webkit-slider-thumb:hover {
+            background-color: #5edb6b;
+            transform: scale(1.1);
+        }
+
+        .slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: #74ff8f;
+            border-radius: 50%;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .slider::-moz-range-thumb:hover {
+            background-color: #5edb6b;
+            transform: scale(1.1);
+        }
+
+        .slider::-ms-thumb {
+            width: 20px;
+            height: 20px;
+            background: #74ff8f;
+            border-radius: 50%;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .slider::-ms-thumb:hover {
+            background-color: #5edb6b;
+            transform: scale(1.1);
+        }
+
+        .change-object-button {
+            top: 70px;
+            right: 20px;
+        }
+
+        .dropdown {
+            display: none;
+            position: absolute;
+            top: 110px;
+            right: 20px;
+            background-color: #222;
+            color: #74ff8f;
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            z-index: 1;
+        }
+
+        .dropdown:hover {
+            background-color: #5edb6b;
+        }
+    </style>
+</head>
+
+<body>
+    <main>
+        <button class="back-button" onclick="window.location.href='explore.html'">Back</button>
+
+        <div class="slider-container">
+            <label for="speedSlider">Speed:</label>
+            <input type="range" id="speedSlider" class="slider" min="0.01" max="0.1" step="0.01" value="0.01"
+                aria-label="Adjust spin speed">
+        </div>
+
+        <button class="change-object-button" onclick="toggleDropdown()">Change Object</button>
+        <select class="dropdown" id="objectSelector" aria-label="Select 3D object" onchange="changeObject()">
+            <option value="cube">Cube</option>
+            <option value="sphere">Sphere</option>
+            <option value="cylinder">Cylinder</option>
+            <option value="torus">Torus</option>
+            <option value="pyramid">Pyramid</option>
+            <option value="icosahedron">Icosahedron</option>
+            <option value="dodecahedron">Dodecahedron</option>
+            <option value="tetrahedron">Tetrahedron</option>
+            <option value="octahedron">Octahedron</option>
+            <option value="ring">Ring</option>
+            <option value="plane">Plane</option>
+        </select>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        // Initialize scene and camera
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        // Lighting setup
+        const ambientLight = new THREE.AmbientLight(0x404040, 1); // Soft white light
+        scene.add(ambientLight);
+
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.7); // Bright white light
+        directionalLight.position.set(5, 10, 7.5);
+        scene.add(directionalLight);
+
+        const pointLight = new THREE.PointLight(0xffffff, 1, 100); // Add point light for more depth
+        pointLight.position.set(0, 5, 5);
+        scene.add(pointLight);
+
+        let currentObject = createObject('cube'); // Default cube object
+        camera.position.z = 5;
+        let spinSpeed = parseFloat(document.getElementById('speedSlider').value);
+
+        // Event listener for speed slider
+        document.getElementById('speedSlider').addEventListener('input', (e) => {
+            spinSpeed = parseFloat(e.target.value);
+        });
+
+        // Toggle dropdown visibility
+        function toggleDropdown() {
+            const dropdown = document.getElementById('objectSelector');
+            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+        }
+
+        // Change the 3D object
+        function changeObject() {
+            const selectedObject = document.getElementById('objectSelector').value;
+            scene.remove(currentObject);
+            currentObject = createObject(selectedObject);
+            scene.add(currentObject);
+        }
+
+        // Create selected 3D object
+        function createObject(type) {
+            const materials = new THREE.MeshStandardMaterial({ color: 0x00ff00, metalness: 0.5, roughness: 0.5 }); // Standard material
+            let geometry;
+
+            switch (type) {
+                case 'sphere':
+                    geometry = new THREE.SphereGeometry(1, 32, 32);
+                    break;
+                case 'cylinder':
+                    geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+                    break;
+                case 'torus':
+                    geometry = new THREE.TorusGeometry(1, 0.4, 16, 100);
+                    break;
+                case 'pyramid':
+                    geometry = new THREE.ConeGeometry(1, 1, 4); // Pyramid-like shape with 4 sides
+                    break;
+                case 'icosahedron':
+                    geometry = new THREE.IcosahedronGeometry(1, 0);
+                    break;
+                case 'dodecahedron':
+                    geometry = new THREE.DodecahedronGeometry(1);
+                    break;
+                case 'tetrahedron':
+                    geometry = new THREE.TetrahedronGeometry(1);
+                    break;
+                case 'octahedron':
+                    geometry = new THREE.OctahedronGeometry(1);
+                    break;
+                case 'ring':
+                    geometry = new THREE.RingGeometry(0.5, 1, 32);
+                    break;
+                case 'plane':
+                    geometry = new THREE.PlaneGeometry(2, 2);
+                    break;
+                case 'cube':
+                    geometry = new THREE.BoxGeometry();
+                    break;
+                case 'cone':
+                    geometry = new THREE.ConeGeometry(1, 2, 32);
+                    break;
+            }
+
+            return new THREE.Mesh(geometry, materials);
+        }
+
+        // Animation loop
+        function animate() {
+            requestAnimationFrame(animate);
+
+            currentObject.rotation.x += spinSpeed;
+            currentObject.rotation.y += spinSpeed;
+
+            renderer.render(scene, camera);
+        }
+
+        // Handle window resizing
+        window.addEventListener('resize', () => {
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            renderer.setSize(width, height);
+            camera.aspect = width / height;
+            camera.updateProjectionMatrix();
+        });
+
+        animate(); // Start animation
+    </script>
+</body>
+
+</html>
